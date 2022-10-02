@@ -1,28 +1,30 @@
+import { useState } from "react";
+import { useEffect } from "react";
+import GifItem from "./GifItem";
+import { getGifs } from "./helpers/getGifs";
+
 const GifGrid = ({ category }) => {
   //Recordar el useState es se pone entre corchetes
+  const [imagenes, setImagenes] = useState([]);
 
-  const getGifs = async () => {
-    const API_KEY = "6opHtBFaDs3uhQ1Z2qgPTTYWRPWBKO8a";
-    const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${category}&limit=${10}&offset=0&rating=g&lang=en`;
+  const getImages = async() => {
+    const newImages =  await getGifs(category);
+    setImagenes(newImages);
+  }
+ 
 
-    const resp = await fetch(url);
-
-    const { data } = await resp.json();
-    const gifs = data.map(img => ({
-      id: img.id,
-      title: img.title,
-      url: img.images.original
-    }))
-
-    console.log(gifs);
-  };
-
-  getGifs();
+useEffect(() => {
+    getImages();
+    // eslint-disable-next-line 
+  }, [])
   return (
     <>
       <h3>{category}</h3>
 
       {/* Desplegar listado*/}
+      {
+        imagenes.map(imagen => <GifItem key={imagen.id} {...imagen}  />)
+      }
     </>
   );
 };
