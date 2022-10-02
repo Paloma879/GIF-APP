@@ -20,11 +20,13 @@ useEffect(() => {
   return (
     <>
       <h3>{category}</h3>
-
-      {/* Desplegar listado*/}
-      {
+<div className="card-grid">
+   {/* Desplegar listado*/}
+   {
         imagenes.map(imagen => <GifItem key={imagen.id} {...imagen}  />)
       }
+</div>
+     
     </>
   );
 };
